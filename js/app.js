@@ -10,7 +10,7 @@ $('body').append("<div class='screen screen-win-one' id='finish'><header><h1>Tic
 // append player 2 wins screen div
 $('body').append("<div class='screen screen-win-two' id='finish'><header><h1>Tic Tac Toe</h1><p class='message'> Wins!</p><a href='#' class='button'>New game</a></header></div>");
 // append it's a tie div
-$('body').append("<div class='screen screen-win-tie' id='finish'><header><h1>Tic Tac Toe</h1><p class='message'>It's a Tie!</p><a href='#' class='button'>New game</a></header></div>");
+$('body').append("<div class='screen screen-win-draw' id='finish'><header><h1>Tic Tac Toe</h1><p class='message'>It's a Tie!</p><a href='#' class='button'>New game</a></header></div>");
 
 //set count variable to zero modulo of count variables decides whose turn it is
 var count = 0;
@@ -55,12 +55,12 @@ var winner = function () {
   };
 var itsATie = function () {
   $('.board').hide();
-  $('.screen-win-tie').show();
+  $('.screen-win-draw').show();
 }
 // hide everything but the start screen on first load
 $('.screen-win-one').hide();
 $('.screen-win-two').hide();
-$('.screen-win-tie').hide();
+$('.screen-win-draw').hide();
 $('.board').hide();
 // clicking on a button either starts or restarts the game
 $('.button').click(function() {
@@ -82,7 +82,20 @@ $('.button').click(function() {
   player2Win = false;
   return player2Win;
 });
-
+// set hover state with mouover/mouseout
+$( ".box" ).mouseover( function() {
+  if (count%2 == 0) {
+    $(this).css("background-image", "url(./img/o.svg)");
+  }
+  //otherwise it's player 2's turn
+  else {
+    $(this).css("background-image", "url(./img/x.svg)");
+  }
+  });
+ // take away image on mouseout
+$( ".box" ).mouseout(function() {
+  $(this).css("background-image", "");
+});
 $('.box').click(function() {
   // if it's player 1's turn
   if (count%2 == 0) {
@@ -165,8 +178,6 @@ $('.box').click(function() {
   if (!player1Win && !player2Win && (count == 9)) {
     itsATie();
   }
-  console.log((!player1Win && !player2Win && (count == 9)));
-  console.log(count);
   return count;
 });
 //closing module pattern
