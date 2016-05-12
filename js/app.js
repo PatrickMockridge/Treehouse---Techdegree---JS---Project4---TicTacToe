@@ -1,7 +1,8 @@
-// use strict
-'use strict'
+
 // invoking the module pattern
 (function () {
+// use strict
+'use strict'
 // append start screen div
 $('body').append("<div class='screen screen-start' id='start'><header><h1>Tic Tac Toe</h1><p class='message'></p><a href='#' class='button'>Start game</a></header></div>");
 // append player 1 wins screen div
@@ -53,8 +54,8 @@ var winner = function () {
     }
   };
 var itsATie = function () {
-  $('board').hide();
-
+  $('.board').hide();
+  $('.screen-win-tie').show();
 }
 // hide everything but the start screen on first load
 $('.screen-win-one').hide();
@@ -76,11 +77,11 @@ $('.button').click(function() {
 $('.button').click(function() {
   player1Win = false;
   return player1Win;
-};
+});
 $('.button').click(function() {
   player2Win = false;
   return player2Win;
-};
+});
 
 $('.box').click(function() {
   // if it's player 1's turn
@@ -161,9 +162,11 @@ $('.box').click(function() {
     }
   checkWin();
   count++;
-  if (!player1Win && !player2Win && count == 8) {
+  if (!player1Win && !player2Win && (count == 9)) {
     itsATie();
   }
+  console.log((!player1Win && !player2Win && (count == 9)));
+  console.log(count);
   return count;
 });
 //closing module pattern
