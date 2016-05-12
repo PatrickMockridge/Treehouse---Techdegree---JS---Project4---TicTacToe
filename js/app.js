@@ -84,6 +84,8 @@ $('.button').click(function() {
 });
 // set hover state with mouover/mouseout
 $( ".box" ).mouseover( function() {
+  //don't adjust boxes with existing state
+  if (!$(this).hasClass('box-filled-1') && !$(this).hasClass('box-filled-2')) {
   if (count%2 == 0) {
     $(this).css("background-image", "url(./img/o.svg)");
   }
@@ -91,12 +93,15 @@ $( ".box" ).mouseover( function() {
   else {
     $(this).css("background-image", "url(./img/x.svg)");
   }
+}
   });
  // take away image on mouseout
 $( ".box" ).mouseout(function() {
   $(this).css("background-image", "");
 });
 $('.box').click(function() {
+  //don't adjust boxes with existing state
+  if (!$(this).hasClass('box-filled-1') && !$(this).hasClass('box-filled-2')) {
   // if it's player 1's turn
   if (count%2 == 0) {
     $(this).addClass('box-filled-1');
@@ -179,6 +184,7 @@ $('.box').click(function() {
     itsATie();
   }
   return count;
-});
+}
+})
 //closing module pattern
 }());
