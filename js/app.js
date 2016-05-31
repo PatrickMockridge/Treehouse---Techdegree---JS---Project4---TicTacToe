@@ -4,7 +4,7 @@
 // use strict
 'use strict'
 // append start screen div
-$('body').append("<div class='screen screen-start' id='start'><header><h1>Tic Tac Toe</h1><br><p class='message'>Enter Player 1 Name: </p><input type='text' class='player1Name' name='player1Name'><br><p class='message'>Enter Player 2 Name: </p><input type='text' class='player2Name' name='player2Name'><br><br><a href='#' class='button start'>Start game</a></header></div>");
+$('body').append("<div class='screen screen-start' id='start'><header><h1>Tic Tac Toe</h1><br><p class='message'>Enter Player 1 Name: </p><input type='text' class='player1Name' name='player1Name'><br><p class='message'>Enter Player 2 Name: </p><input type='text' class='player2Name' name='player2Name'><br><label><input type='checkbox' class='AI' /> Play the Computer?</label><br><a href='#' class='button start'>Start game</a></header></div>");
 // append player 1 wins screen div
 $('body').append("<div class='screen screen-win-one' id='finish'><header><h1>Tic Tac Toe</h1><p class='message'> Wins!</p><a href='#' class='button'>New game</a></header></div>");
 // append player 2 wins screen div
@@ -12,13 +12,65 @@ $('body').append("<div class='screen screen-win-two' id='finish'><header><h1>Tic
 // append it's a tie div
 $('body').append("<div class='screen screen-win-draw' id='finish'><header><h1>Tic Tac Toe</h1><p class='message'>It's a Tie!</p><a href='#' class='button'>New game</a></header></div>");
 //make text box look nicey
-$('input').css({
+$(':text').css({
     "width": "30%",
     "padding": "12px 20px",
     "margin": "8px 0",
     "box-sizing": "border-box",
-    "border-radius": "3px"
+    "border-radius": "6px"
 });
+
+$('label').css({
+    'display': 'block',
+    'padding-left': '15px',
+    'text-indent': '-15px',
+  });
+
+$(':checkbox').css ({
+    'width': '13px',
+    'height': '13px',
+    'padding': '0',
+    'margin': '0',
+    'vertical-align': 'bottom',
+    'position': 'relative',
+    'top': '-1px',
+    '*overflow': 'hidden'
+});
+// when checkbox toggled, engage AI or not
+var computerPlay = false;
+$(".AI").change(function() {
+    if(this.checked) {
+      computerPlay = true;
+      console.log(computerPlay);
+      return computerPlay;
+    }
+    else {
+      computerPlay = false;
+      return computerPlay;
+    }
+});
+
+//rudimentary AI
+var exMachina = function() {
+  // if the play computer checkbox was ticked
+  if (computerPlay) {
+    // and if it's X's turn
+    if (count%2 == 1) {
+      //pick a random number
+      var random = Math.floor(Math.random()*9);
+      //pick a random box with the random number
+      var randomBox = $('boxes li').eq('random');
+      //if it's not filled
+      if (randomBox.attr('class') != 'box-filled-1' || 'box-filled-2') {
+        //fill it
+        $(this).addClass('box-filled-2');
+        count++;
+        return count;
+      }
+    }
+  }
+};
+
 //set count variable to zero modulo of count variables decides whose turn it is
 var count = 0;
 //declare all initial box state variables
@@ -43,6 +95,8 @@ var c3x = false;
 // no winners yet but need global variables declared
 var player1Win = false;
 var player2Win = false;
+
+
 // set IDs of Boxes in order to be able to see who's won
 var boxCount = 1;
 $('.boxes > .box').each(function(index) {
@@ -153,6 +207,7 @@ $('.box').click(function() {
   c2x = $('#8').hasClass("box-filled-2");
   c3o = $('#9').hasClass("box-filled-1");
   c3x = $('#9').hasClass("box-filled-2");
+
   //check if player one won
   var checkWin = function () {
       // row 1
@@ -201,13 +256,70 @@ $('.box').click(function() {
     }
   checkWin();
   count++;
+  console.log(count);
   //if all box full and still no winner
   if (!player1Win && !player2Win && (count == 9)) {
     //it's a tie!
     itsATie();
   }
-  return count;
-}
-})
+  //Paying against the computer. If checkbox was ticked
+  if (computerPlay) {
+    // and if it's X's turn
+    if (count%2 == 1) {
+      //create a function for the AI to move
+      var moveComp = function() {
+        //pick a random number
+        var ran = Math.floor(Math.random()*9);
+        //if it already has been picked
+        if ($('.boxes li').eq(ran).hasClass('box-filled-1') || $('.boxes li').eq(ran).hasClass('box-filled-2')) {
+          //pick another random number
+          moveComp();
+        }
+        //if the random number is good
+        else {
+        //take X's turn
+        $('.boxes li').eq(ran).addClass('box-filled-2');
+        $('#player1').addClass('active');
+        $('#player2').removeClass('active');
+
+        //assign checkwin variables
+
+        a1o = $('#1').hasClass("box-filled-1");
+        a1x = $('#1').hasClass("box-filled-2");
+        a2o = $('#2').hasClass("box-filled-1");
+        a2x = $('#2').hasClass("box-filled-2");
+        a3o = $('#3').hasClass("box-filled-1");
+        a3x = $('#3').hasClass("box-filled-2");
+        b1o = $('#4').hasClass("box-filled-1");
+        b1x = $('#4').hasClass("box-filled-2");
+        b2o = $('#5').hasClass("box-filled-1");
+        b2x = $('#5').hasClass("box-filled-2");
+        b3o = $('#6').hasClass("box-filled-1");
+        b3x = $('#6').hasClass("box-filled-2");
+        c1o = $('#7').hasClass("box-filled-1");
+        c1x = $('#7').hasClass("box-filled-2");
+        c2o = $('#8').hasClass("box-filled-1");
+        c2x = $('#8').hasClass("box-filled-2");
+        c3o = $('#9').hasClass("box-filled-1");
+        c3x = $('#9').hasClass("box-filled-2");
+        //check for the win
+        checkWin();
+        //counter goes up
+        count++;
+        //if all box full and still no winner
+        if (!player1Win && !player2Win && (count == 9)) {
+          //it's a tie!
+          itsATie();
+          //return the count to the global scope
+        return count;
+        }
+      }
+    }
+    //computer takes turn
+    moveComp();
+  }}
+    return count;
+  }
+});
 //closing module pattern
 }());
