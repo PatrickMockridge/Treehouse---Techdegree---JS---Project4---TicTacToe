@@ -50,27 +50,6 @@ $(".AI").change(function() {
     }
 });
 
-//rudimentary AI
-var exMachina = function() {
-  // if the play computer checkbox was ticked
-  if (computerPlay) {
-    // and if it's X's turn
-    if (count%2 == 1) {
-      //pick a random number
-      var random = Math.floor(Math.random()*9);
-      //pick a random box with the random number
-      var randomBox = $('boxes li').eq('random');
-      //if it's not filled
-      if (randomBox.attr('class') != 'box-filled-1' || 'box-filled-2') {
-        //fill it
-        $(this).addClass('box-filled-2');
-        count++;
-        return count;
-      }
-    }
-  }
-};
-
 //set count variable to zero modulo of count variables decides whose turn it is
 var count = 0;
 //declare all initial box state variables
